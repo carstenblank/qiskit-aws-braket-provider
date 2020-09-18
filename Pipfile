@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+qiskit = "==0.20.0"
+amazon-braket-sdk = "*"
+boto3 = "*"
+boto3-stubs = "*"
+
+[dev-packages]
+pytest = "*"
+
+[requires]
+python_version = "3.8"
