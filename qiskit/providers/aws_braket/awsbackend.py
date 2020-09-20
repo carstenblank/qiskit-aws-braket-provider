@@ -7,13 +7,17 @@ from botocore.response import StreamingBody
 from braket.aws import AwsDevice, AwsQuantumTask, AwsSession
 from braket.circuits import Circuit
 from braket.device_schema import DeviceCapabilities
+from braket.device_schema.ionq import IonqDeviceCapabilities
+from braket.device_schema.rigetti import RigettiDeviceCapabilities
+from braket.device_schema.simulators import GateModelSimulatorDeviceCapabilities
 from qiskit.providers import BaseBackend, JobStatus
 from qiskit.providers.models import QasmBackendConfiguration, BackendProperties, BackendStatus
 from qiskit.qobj import QasmQobj
 
 from . import awsjob
 from . import awsprovider
-from .conversions import aws_device_2_configuration, aws_to_properties
+from .conversions_configuration import aws_device_2_configuration
+from .conversions_properties import aws_ionq_to_properties, aws_rigetti_to_properties, aws_simulator_to_properties
 from .transpilation import convert_qasm_qobj
 
 logger = logging.getLogger(__name__)
@@ -32,7 +36,12 @@ class AWSBackend(BaseBackend):
 
     def properties(self) -> BackendProperties:
         properties: DeviceCapabilities = self._aws_device.properties
-        return aws_to_properties(properties, self._configuration)
+        if isinstance(properties, IonqDeviceCapabilities):
+            return aws_ionq_to_properties(properties, self._configuration)
+        if isinstance(properties, RigettiDeviceCapabilities):
+            return aws_rigetti_to_properties(properties, self._configuration)
+        if isinstance(properties, GateModelSimulatorDeviceCapabilities):
+            return aws_simulator_to_properties(properties, self._configuration)
 
     def status(self) -> BackendStatus:
         pass
