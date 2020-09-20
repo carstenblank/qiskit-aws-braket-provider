@@ -4,12 +4,14 @@ import unittest
 import uuid
 
 import boto3
+from braket.aws import AwsDevice
 from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, transpile, assemble
 from qiskit.circuit.measure import measure
 from qiskit.providers import JobStatus
 
 from aws_braket.awsbackend import AWSBackend
 from aws_braket.awsprovider import AWSProvider
+from aws_braket.conversions_configuration import aws_device_2_configuration
 
 LOG = logging.getLogger(__name__)
 
@@ -125,7 +127,7 @@ class AWSBackendTests(unittest.TestCase):
 
         self.assertIsNotNone(job)
         self.assertEqual(job.job_id(), qobj.qobj_id)
-        self.assertEqual(job.status(), JobStatus.INITIALIZING or JobStatus.QUEUED)
+        self.assertTrue(job.status() in [JobStatus.INITIALIZING, JobStatus.QUEUED])
         while job.status() != JobStatus.QUEUED:
             time.sleep(1)
         job.cancel()
