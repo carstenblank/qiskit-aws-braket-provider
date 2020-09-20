@@ -1,17 +1,35 @@
 import logging
+from collections import Counter
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 from braket.aws import AwsQuantumTask
 from braket.tasks import GateModelQuantumTaskResult
 from qiskit.providers import BaseJob, JobStatus
-from qiskit.qobj import QasmQobj
+from qiskit.qobj import QasmQobj, QasmQobjExperiment, QasmQobjInstruction
 from qiskit.result import Result
 from qiskit.result.models import ExperimentResult, ExperimentResultData
 
 from . import awsbackend
 
 logger = logging.getLogger(__name__)
+
+
+def _reverse_and_map(bit_string: str, mapping: Dict[int, int]):
+    result_bit_string = len(bit_string) * ['x']
+    for i, c in enumerate(reversed(bit_string)):
+        result_bit_string[mapping[i]] = c
+    # qiskit is Little Endian, braket is Big Endian, so we don't do a re-reversed here
+    result = "".join(result_bit_string)
+    return result
+
+
+def map_measurements(counts: Counter, qasm_experiment: QasmQobjExperiment) -> Dict[str, int]:
+    # Need to get measure mapping
+    instructions: List[QasmQobjInstruction] = [i for i in qasm_experiment.instructions if i.name == 'measure']
+    mapping = dict([(q, m) for i in instructions for q, m in zip(i.qubits, i.memory)])
+    mapped_counts = dict((_reverse_and_map(k, mapping), v) for k, v in counts.items())
+    return mapped_counts
 
 
 class AWSJob(BaseJob):
@@ -53,28 +71,29 @@ class AWSJob(BaseJob):
         logger.warning("job.submit() is deprecated. Please use AWSBackend.run() to submit a job.", DeprecationWarning, stacklevel=2)
 
     def result(self):
-        result: GateModelQuantumTaskResult = self._task.result()
-        counts = result.measurement_counts
-        # Must interpret the measurement here
-        # self._qasm_experiment
-        data = ExperimentResultData(
-            counts=dict(counts)
-        )
-        experiment_results: List[ExperimentResult] = [
-            ExperimentResult(
+        experiment_results: List[ExperimentResult] = []
+        task: AwsQuantumTask
+        qasm_experiment: QasmQobjExperiment
+        for task, qasm_experiment in zip(self._tasks, self._qobj.experiments):
+            result: GateModelQuantumTaskResult = task.result()
+            counts: Dict[str, int] = map_measurements(result.measurement_counts, qasm_experiment)
+            data = ExperimentResultData(
+                counts=dict(counts)
+            )
+            experiment_result = ExperimentResult(
                 shots=self.shots,
-                success=self._task.state() == '',  # TODO
-                header=self._qasm_experiment.header,
-                status=self._task.state(),
+                success=task.state() == 'COMPLETED',
+                header=qasm_experiment.header,
+                status=task.state(),
                 data=data
             )
-        ]
+            experiment_results.append(experiment_result)
         qiskit_result = Result(
             backend_name=self._backend.name(),
             backend_version=self._backend.version(),
-            qobj_id='',
+            qobj_id=self._qobj.qobj_id,
             job_id=self._job_id,
-            success=self._task.state() == '',  # TODO
+            success=self.status(),
             results=experiment_results
         )
         return qiskit_result
