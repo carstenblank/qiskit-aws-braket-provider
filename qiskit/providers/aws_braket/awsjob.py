@@ -20,7 +20,7 @@ def _reverse_and_map(bit_string: str, mapping: Dict[int, int]):
     for i, c in enumerate(reversed(bit_string)):
         result_bit_string[mapping[i]] = c
     # qiskit is Little Endian, braket is Big Endian, so we don't do a re-reversed here
-    result = "".join(result_bit_string)
+    result = "".join(reversed(result_bit_string))
     return result
 
 
@@ -28,7 +28,7 @@ def map_measurements(counts: Counter, qasm_experiment: QasmQobjExperiment) -> Di
     # Need to get measure mapping
     instructions: List[QasmQobjInstruction] = [i for i in qasm_experiment.instructions if i.name == 'measure']
     mapping = dict([(q, m) for i in instructions for q, m in zip(i.qubits, i.memory)])
-    mapped_counts = dict((_reverse_and_map(k, mapping), v) for k, v in counts.items())
+    mapped_counts = dict((_reverse_and_map(k, mapping)[::-1], v) for k, v in counts.items())  # must be reversed from Big Endian to Little Endian
     return mapped_counts
 
 
