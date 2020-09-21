@@ -8,7 +8,7 @@ before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get update
   - pip install --upgrade pytest pytest-cov setuptools wheel codecov pipenv pipenv-setup
-  - pipenv --install
+  - pipenv install
 install:
   - python setup.py bdist_wheel
   - pip install dist/qiskit-aws-braket-provider*.whl
