@@ -41,6 +41,8 @@ class TranspilationTests(unittest.TestCase):
 
         LOG.info(noise_model)
 
+    @unittest.skip("qiskit-aer has a bug that makes this fail. Bug fixed, wait for new release. "
+                   "See https://github.com/Qiskit/qiskit-aer/pull/942")
     def test_aws_ionq_to_properties(self):
         self.session = boto3.session.Session(region_name='us-west-1')
         aws_device = AwsDevice.get_devices(names=['IonQ Device'])[0]
@@ -53,6 +55,8 @@ class TranspilationTests(unittest.TestCase):
         self.assertIsInstance(backend_properties, BackendProperties)
         self._test_noise_model(backend_properties)
 
+    @unittest.skip("qiskit-aer has a bug that makes this fail. Bug fixed, wait for new release. "
+                   "See https://github.com/Qiskit/qiskit-aer/pull/942")
     def test_aws_rigetti_to_properties(self):
         self.session = boto3.session.Session(region_name='us-west-1')
         aws_device = AwsDevice.get_devices(names=['Aspen-8'])[0]
