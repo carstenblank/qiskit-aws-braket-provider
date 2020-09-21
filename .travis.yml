@@ -11,7 +11,7 @@ before_install:
   - pipenv install
 install:
   - python setup.py bdist_wheel
-  - pip install dist/qiskit-aws-braket-provider*.whl
+  - pip install dist/qiskit_aws_braket_provider*.whl
 script:
   - python -m pytest tests --cov=qiskit-aws-braket-provider --cov-report term-missing --cov-report=html:coverage_html_report
 after_success:
