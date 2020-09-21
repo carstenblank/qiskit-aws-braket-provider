@@ -24,7 +24,7 @@ from braket.tasks.local_quantum_task import LocalQuantumTask
 from qiskit.providers.aer.backends.aerbackend import AerBackend
 from qiskit.result import Result
 
-from aws_braket.transpilation import convert_experiment
+from qiskit_aws_braket_provider.transpilation import convert_experiment
 
 LOG = logging.getLogger(__name__)
 

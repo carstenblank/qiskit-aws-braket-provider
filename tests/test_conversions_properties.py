@@ -20,8 +20,8 @@ from qiskit.providers.aer.noise import NoiseModel
 from qiskit.providers.aer.noise.device import basic_device_gate_errors, basic_device_readout_errors
 from qiskit.providers.models import BackendProperties
 
-from aws_braket.conversions_configuration import aws_device_2_configuration
-from aws_braket.conversions_properties import aws_ionq_to_properties, aws_rigetti_to_properties, \
+from qiskit_aws_braket_provider.conversions_configuration import aws_device_2_configuration
+from qiskit_aws_braket_provider.conversions_properties import aws_ionq_to_properties, aws_rigetti_to_properties, \
     aws_simulator_to_properties
 
 LOG = logging.getLogger(__name__)

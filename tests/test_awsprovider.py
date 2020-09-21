@@ -16,8 +16,8 @@ import unittest
 
 import boto3
 
-from aws_braket.awsbackend import AWSBackend
-from aws_braket.awsprovider import AWSProvider
+from qiskit_aws_braket_provider.awsbackend import AWSBackend
+from qiskit_aws_braket_provider.awsprovider import AWSProvider
 
 LOG = logging.getLogger(__name__)
 
