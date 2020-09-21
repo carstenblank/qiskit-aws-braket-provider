@@ -7,12 +7,12 @@ env:
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get update
-  - pip install --upgrade pytest pytest-cov setuptools wheel codecov pipenv pipenv-setup
+  - pip install --upgrade pipenv
   - pipenv install
 install:
   - python setup.py bdist_wheel
   - pip install dist/qiskit_aws_braket_provider*.whl
 script:
-  - python -m pytest tests --cov=qiskit-aws-braket-provider --cov-report term-missing --cov-report=html:coverage_html_report
+  - python -m pytest tests --cov=qiskit_aws_braket_provider --cov-report term-missing --cov-report=html:coverage_html_report
 after_success:
   - codecov
