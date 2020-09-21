@@ -8,7 +8,7 @@ before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get update
   - pip install --upgrade pipenv
-  - pipenv install
+  - pipenv sync
 install:
   - python setup.py bdist_wheel
   - pip install dist/qiskit_aws_braket_provider*.whl
