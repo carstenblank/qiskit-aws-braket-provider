@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.com/carstenblank/qiskit-aws-braket-provider.svg?branch=master)](https://travis-ci.com/carstenblank/qiskit-aws-braket-provider)
 [![codecov](https://codecov.io/gh/carstenblank/qiskit-aws-braket-provider/branch/master/graph/badge.svg)](https://codecov.io/gh/carstenblank/qiskit-aws-braket-provider)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/92c73ac568244ed5a38be09a29e27833)](https://www.codacy.com/manual/carstenblank/qiskit-aws-braket-provider?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=carstenblank/qiskit-aws-braket-provider&amp;utm_campaign=Badge_Grade)
 
 # IBM's qiskit provider for AWS Braket (qiskit-aws-braket-provider)
 
@@ -17,16 +18,16 @@ __So__: use at your own risk.
 # Contributing
 We welcome contributions - simply fork the repository of this plugin, and then make a pull request containing your contribution. All contributers to this plugin will be listed as authors on the releases.
 
-We also encourage bug reports, suggestions for new features and enhancements, and even links to cool projects or applications built on PennyLane.
+We also encourage bug reports, suggestions for new features and enhancements!
 
 # Authors
 Carsten Blank
 
 # Support
 
-Source Code: https://github.com/carstenblank/qiskit-algorithms
+Source Code: https://github.com/carstenblank/qiskit-aws-braket-provider
 
-Issue Tracker: https://github.com/carstenblank/qiskit_algorithms/issues
+Issue Tracker: https://github.com/carstenblank/qiskit-aws-braket-provider/issues
 
 If you are having issues, please let us know by posting the issue on our Github issue tracker.
 
