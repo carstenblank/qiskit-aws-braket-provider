@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/carstenblank/qiskit-aws-braket-provider.svg?branch=master)](https://travis-ci.com/carstenblank/qiskit-aws-braket-provider)
+[![codecov](https://codecov.io/gh/carstenblank/qiskit-aws-braket-provider/branch/master/graph/badge.svg)](https://codecov.io/gh/carstenblank/qiskit-aws-braket-provider)
+
 # qiskit-aws-braket-provider
 
 Attention: this is a work-in-progess implementation. 
