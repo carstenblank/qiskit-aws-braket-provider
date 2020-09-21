@@ -1,1 +1,6 @@
 .idea/
+build/
+dist/
+*.egg-info/
+.coverage
+coverage_html_report/

@@ -20,8 +20,8 @@ from qiskit.providers.aer.noise import NoiseModel
 from qiskit.providers.aer.noise.device import basic_device_gate_errors, basic_device_readout_errors
 from qiskit.providers.models import BackendProperties
 
-from aws_braket.conversions_configuration import aws_device_2_configuration
-from aws_braket.conversions_properties import aws_ionq_to_properties, aws_rigetti_to_properties, \
+from qiskit_aws_braket_provider.conversions_configuration import aws_device_2_configuration
+from qiskit_aws_braket_provider.conversions_properties import aws_ionq_to_properties, aws_rigetti_to_properties, \
     aws_simulator_to_properties
 
 LOG = logging.getLogger(__name__)
@@ -41,6 +41,8 @@ class TranspilationTests(unittest.TestCase):
 
         LOG.info(noise_model)
 
+    @unittest.skip("qiskit-aer has a bug that makes this fail. Bug fixed, wait for new release. "
+                   "See https://github.com/Qiskit/qiskit-aer/pull/942")
     def test_aws_ionq_to_properties(self):
         self.session = boto3.session.Session(region_name='us-west-1')
         aws_device = AwsDevice.get_devices(names=['IonQ Device'])[0]
@@ -53,6 +55,8 @@ class TranspilationTests(unittest.TestCase):
         self.assertIsInstance(backend_properties, BackendProperties)
         self._test_noise_model(backend_properties)
 
+    @unittest.skip("qiskit-aer has a bug that makes this fail. Bug fixed, wait for new release. "
+                   "See https://github.com/Qiskit/qiskit-aer/pull/942")
     def test_aws_rigetti_to_properties(self):
         self.session = boto3.session.Session(region_name='us-west-1')
         aws_device = AwsDevice.get_devices(names=['Aspen-8'])[0]

@@ -18,7 +18,7 @@ import boto3
 from braket.aws import AwsDevice
 from qiskit.providers.models import QasmBackendConfiguration
 
-from aws_braket.conversions_configuration import aws_device_2_configuration
+from qiskit_aws_braket_provider.conversions_configuration import aws_device_2_configuration
 
 LOG = logging.getLogger(__name__)
 

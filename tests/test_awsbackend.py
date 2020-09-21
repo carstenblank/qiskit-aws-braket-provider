@@ -17,14 +17,12 @@ import unittest
 import uuid
 
 import boto3
-from braket.aws import AwsDevice
 from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, transpile, assemble
 from qiskit.circuit.measure import measure
 from qiskit.providers import JobStatus
 
-from aws_braket.awsbackend import AWSBackend
-from aws_braket.awsprovider import AWSProvider
-from aws_braket.conversions_configuration import aws_device_2_configuration
+from qiskit_aws_braket_provider.awsbackend import AWSBackend
+from qiskit_aws_braket_provider.awsprovider import AWSProvider
 
 LOG = logging.getLogger(__name__)
 

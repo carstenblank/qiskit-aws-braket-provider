@@ -17,9 +17,9 @@ import unittest
 import boto3
 from qiskit.result import Result
 
-from aws_braket.awsbackend import AWSBackend
-from aws_braket.awsjob import AWSJob, _reverse_and_map
-from aws_braket.awsprovider import AWSProvider
+from qiskit_aws_braket_provider.awsbackend import AWSBackend
+from qiskit_aws_braket_provider.awsjob import AWSJob, _reverse_and_map
+from qiskit_aws_braket_provider.awsprovider import AWSProvider
 
 LOG = logging.getLogger(__name__)
 

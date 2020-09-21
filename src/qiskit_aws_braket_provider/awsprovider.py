@@ -14,7 +14,6 @@
 import logging
 from typing import List
 
-import boto3
 from boto3 import Session
 from braket.aws import AwsDevice, AwsSession
 from braket.device_schema.dwave import DwaveDeviceCapabilities
