@@ -2,6 +2,9 @@
 [![codecov](https://codecov.io/gh/carstenblank/qiskit-aws-braket-provider/branch/master/graph/badge.svg)](https://codecov.io/gh/carstenblank/qiskit-aws-braket-provider)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/92c73ac568244ed5a38be09a29e27833)](https://www.codacy.com/manual/carstenblank/qiskit-aws-braket-provider?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=carstenblank/qiskit-aws-braket-provider&amp;utm_campaign=Badge_Grade)
 
+[![PyPI](https://img.shields.io/pypi/v/qiskit-aws-braket-provider.svg?style=for-the-badge)](https://pypi.org/project/qiskit-aws-braket-provider)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/qiskit-aws-braket-provider.svg?style=for-the-badge)](https://pypi.org/project/qiskit-aws-braket-provider)
+
 # IBM's qiskit provider for AWS Braket (qiskit-aws-braket-provider)
 
 ## Attention: this is a work-in-progess implementation. 
