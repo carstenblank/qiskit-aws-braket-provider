@@ -12,6 +12,7 @@ pint = "*"
 
 [dev-packages]
 pytest = "*"
+pipenv-setup = "*"
 
 [requires]
 python_version = "3.8"

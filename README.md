@@ -2,13 +2,14 @@
 
 Attention: this is a work-in-progess implementation. 
 What this means: it basically works. But: 
- a) edge cases are not covered 
- b) even broad cases aren't entirely covered!! 
- c) in code documentation is not thre
- d) no usage or API documentation exists
- e) CI/CD is not setup
 
-So: use at your own risk. 
+ 1. edge cases are not covered 
+ 2. even broad cases aren't entirely covered!! 
+ 3. in code documentation is not thre
+ 4. no usage or API documentation exists
+ 5. CI/CD is not setup
+
+__So__: use at your own risk. 
 
 # Contribution
 
