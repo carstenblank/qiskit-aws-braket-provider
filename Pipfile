@@ -12,6 +12,10 @@ pint = "*"
 
 [dev-packages]
 pytest = "*"
+pytest-cov = "*"
+setuptools = "*"
+wheel = "*"
+codecov = "*"
 pipenv-setup = "*"
 
 [requires]
