@@ -49,12 +49,22 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = "sphinx_rtd_theme"
+htmlhelp_basename = "{}doc".format(project)
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+source_suffix = ".rst"
 master_doc = "index"
+
+autoclass_content = "both"
+autodoc_member_order = "bysource"
+default_role = "py:obj"
+
 apidoc_module_dir = "../src/qiskit_aws_braket_provider"
+apidoc_separate_modules = True
+apidoc_module_first = True
+apidoc_extra_args = ["-f", "--implicit-namespaces", "-H", "API Reference"]
