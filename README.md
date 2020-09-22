@@ -1,6 +1,7 @@
 [![Build Status](https://img.shields.io/travis/com/carstenblank/qiskit-aws-braket-provider/master.svg?style=for-the-badge)](https://travis-ci.com/carstenblank/qiskit-aws-braket-provider)
 [![codecov](https://img.shields.io/codecov/c/github/carstenblank/qiskit-aws-braket-provider/master.svg?style=for-the-badge)](https://codecov.io/gh/carstenblank/qiskit-aws-braket-provider)
 [![Codacy Badge](https://img.shields.io/codacy/grade/92c73ac568244ed5a38be09a29e27833.svg?style=for-the-badge)](https://www.codacy.com/manual/carstenblank/qiskit-aws-braket-provider?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=carstenblank/qiskit-aws-braket-provider&amp;utm_campaign=Badge_Grade)
+[![Documentation Status](https://img.shields.io/readthedocs/qiskit-aws-braket-provider?style=for-the-badge&version=latest)](https://qiskit-aws-braket-provider.readthedocs.io/en/latest/?badge=latest)
 [![PyPI](https://img.shields.io/pypi/v/qiskit-aws-braket-provider.svg?style=for-the-badge)](https://pypi.org/project/qiskit-aws-braket-provider)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/qiskit-aws-braket-provider.svg?style=for-the-badge)](https://pypi.org/project/qiskit-aws-braket-provider)
 

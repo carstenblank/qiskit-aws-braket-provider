@@ -1,0 +1,7 @@
+sphinx
+sphinx-rtd-theme
+sphinxcontrib-apidoc
+boto3
+pint
+amazon-braket-sdk
+qiskit
