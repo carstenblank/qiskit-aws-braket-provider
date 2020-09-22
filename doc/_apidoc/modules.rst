@@ -1,5 +1,5 @@
-qiskit_aws_braket_provider
-==========================
+API Reference
+=============
 
 .. toctree::
    :maxdepth: 4

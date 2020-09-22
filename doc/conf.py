@@ -31,8 +31,12 @@ release = '0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinxcontrib.apidoc'
+    "sphinxcontrib.apidoc",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.todo",
+    "sphinx.ext.coverage"
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -60,11 +64,14 @@ html_static_path = ['_static']
 source_suffix = ".rst"
 master_doc = "index"
 
+napoleon_use_rtype = False
+
 autoclass_content = "both"
 autodoc_member_order = "bysource"
 default_role = "py:obj"
 
 apidoc_module_dir = "../src/qiskit_aws_braket_provider"
+apidoc_output_dir = "_apidoc"
 apidoc_separate_modules = True
 apidoc_module_first = True
 apidoc_extra_args = ["-f", "--implicit-namespaces", "-H", "API Reference"]

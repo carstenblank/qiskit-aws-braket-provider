@@ -10,7 +10,7 @@ Welcome to qiskit-aws-braket-provider's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   api/modules
+   _apidoc/modules
 
 Indices and tables
 ==================
