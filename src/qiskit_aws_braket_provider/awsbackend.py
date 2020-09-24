@@ -246,15 +246,15 @@ class AWSBackend(BaseBackend):
             return None
 
     def run(self, qobj: QasmQobj, s3_bucket: Optional[str] = None, extra_data: Optional[dict] = None):
-        s3_location: AwsSession.S3DestinationFolder = self._save_job_data_s3(qobj, s3_bucket=s3_bucket, extra_data=extra_data)
 
         # If we get here, then we can continue with running, else ValueError!
         circuits: List[Circuit] = list(convert_qasm_qobj(qobj))
         shots = qobj.config.shots
-        shots = 1  # TODO: remove once you feel safe!
 
         tasks: List[AwsQuantumTask] = []
         try:
+            s3_location: AwsSession.S3DestinationFolder = self._save_job_data_s3(qobj, s3_bucket=s3_bucket, extra_data=extra_data)
+
             for circuit in circuits:
                 task = self._aws_device.run(
                     task_specification=circuit,
@@ -262,6 +262,9 @@ class AWSBackend(BaseBackend):
                     shots=shots
                 )
                 tasks.append(task)
+
+            task_arns = [t.id for t in tasks]
+            self._save_job_task_arns(job_id=qobj.qobj_id, task_arns=task_arns, s3_bucket=s3_location[0])
         except Exception as ex:
             logger.error(f'During creation of tasks an error occurred: {ex}')
             logger.error(f'Cancelling all tasks {len(tasks)}!')
@@ -269,9 +272,9 @@ class AWSBackend(BaseBackend):
                 logger.error(f'Attempt to cancel {task.id}...')
                 task.cancel()
                 logger.error(f'State of {task.id}: {task.state()}.')
+            self._delete_job_task_arns(qobj.qobj_id, s3_bucket=s3_bucket)
+            self._delete_job_data_s3(qobj.qobj_id, s3_bucket=s3_bucket)
             raise ex
-        task_arns = [t.id for t in tasks]
-        self._save_job_task_arns(job_id=qobj.qobj_id, task_arns=task_arns, s3_bucket=s3_location[0])
 
         job = awsjob.AWSJob(
             job_id=qobj.qobj_id,
