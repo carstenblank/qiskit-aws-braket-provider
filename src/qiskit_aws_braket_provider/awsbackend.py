@@ -13,7 +13,9 @@
 # limitations under the License.
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
+
+from braket.device_schema.device_service_properties_v1 import DeviceCost
 from typing import List, Dict, Optional, Any, Union, Tuple
 
 from botocore.response import StreamingBody
@@ -210,6 +212,20 @@ class AWSBackend(BaseBackend):
             backend=self
         )
         return job
+
+    def estimate_costs(self, qobj: QasmQobj) -> Optional[float]:
+        shots = qobj.config.shots
+        no_experiments = len(qobj.experiments)
+
+        cost: DeviceCost = self._aws_device.properties.service.deviceCost
+        if cost.unit == 'shot':
+            return shots * no_experiments * cost.price
+        elif cost.unit == 'hour':
+            time_per_experiment = timedelta(seconds=10)  # TODO: make this a better estimate: depends on no_qubits and depth
+            total_time = shots * no_experiments * time_per_experiment
+            return total_time.total_seconds() / 60 / 60 * cost.price
+        else:
+            return None
 
     def run(self, qobj: QasmQobj, s3_bucket: Optional[str] = None, extra_data: Optional[dict] = None):
         s3_location: AwsSession.S3DestinationFolder = self._save_job_data_s3(qobj, s3_bucket=s3_bucket, extra_data=extra_data)
