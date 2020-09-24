@@ -43,5 +43,10 @@ class AWSJobTests(unittest.TestCase):
 
     def test_reverse_and_map(self):
         mapping = {0: 2, 1: 3, 2: 0, 3:1}
-        adjusted_bit_string = _reverse_and_map('dcba', mapping)
+        adjusted_bit_string = _reverse_and_map('abcd', mapping)
         self.assertEqual(adjusted_bit_string, 'badc')
+
+    def test_reverse_and_map_less(self):
+        mapping = {1: 1, 3: 0}
+        adjusted_bit_string = _reverse_and_map('abcd', mapping)
+        self.assertEqual(adjusted_bit_string, 'bd')

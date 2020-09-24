@@ -29,9 +29,10 @@ logger = logging.getLogger(__name__)
 
 
 def _reverse_and_map(bit_string: str, mapping: Dict[int, int]):
-    result_bit_string = len(bit_string) * ['x']
-    for i, c in enumerate(reversed(bit_string)):
-        result_bit_string[mapping[i]] = c
+    result_bit_string = len(mapping) * ['x']
+    for i, c in enumerate(bit_string):
+        if i in mapping:
+            result_bit_string[mapping[i]] = c
     # qiskit is Little Endian, braket is Big Endian, so we don't do a re-reversed here
     result = "".join(reversed(result_bit_string))
     return result
