@@ -33,8 +33,7 @@ class AWSBackendTests(unittest.TestCase):
 
     def setUp(self) -> None:
         logging.basicConfig(format=logging.BASIC_FORMAT, level='INFO')
-        self.session = boto3.session.Session(region_name='us-east-1')
-        self.provider = AWSProvider(self.session)
+        self.provider: AWSProvider = AWSProvider(region_name='us-east-1')
         self.backend: AWSBackend = self.provider.get_backend(self.backend_name)
 
     def test_get_job_data_s3_folder(self):
@@ -47,7 +46,7 @@ class AWSBackendTests(unittest.TestCase):
                    '537a196e-8162-41c6-8c72-a7f8b456da33', '537a196e-8162-41c6-8c72-a7f8b456da34']
         s3_bucket, s3_folder = self.backend._save_job_task_arns(job_id, task_arns)
         self.assertTrue(
-            AWSBackend._exists_file(self.session.client('s3'), s3_bucket, f'{s3_folder}/task_arns.json')
+            AWSBackend._exists_file(self.provider._session.client('s3'), s3_bucket, f'{s3_folder}/task_arns.json')
         )
         self.backend._delete_job_task_arns(job_id=job_id, s3_bucket=s3_bucket)
 
@@ -70,7 +69,7 @@ class AWSBackendTests(unittest.TestCase):
         self.assertEqual(s3_bucket, self.backend.provider().get_default_bucket())
         self.assertEqual(s3_key, f'results-{self.backend_name}-{qobj.qobj_id}')
         self.assertTrue(
-            AWSBackend._exists_file(self.session.client('s3'), s3_bucket, f'{s3_key}/qiskit_qobj_data.json')
+            AWSBackend._exists_file(self.provider._session.client('s3'), s3_bucket, f'{s3_key}/qiskit_qobj_data.json')
         )
         self.backend._delete_job_data_s3(job_id=qobj.qobj_id, s3_bucket=None)
 
