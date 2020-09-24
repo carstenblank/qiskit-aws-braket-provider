@@ -77,6 +77,9 @@ def convert_experiment(experiment: QasmQobjExperiment) -> Circuit:
         name = qasm_obj_instruction.name
         if name == 'measure':
             qc.add_result_type(result_types.Probability(qasm_obj_instruction.qubits))
+        elif name == 'barrier':
+            # This does not exist
+            pass
         else:
             params = []
             if hasattr(qasm_obj_instruction, 'params'):
