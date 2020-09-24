@@ -52,3 +52,7 @@ class AWSProvider(BaseProvider):
 
     def _get_account_id(self):
         return self._session.client('sts').get_caller_identity().get('Account')
+
+    def get_backend(self, name=None, **kwargs) -> 'awsbackend.AWSBackend':
+        return super().get_backend(name, **kwargs)
+
