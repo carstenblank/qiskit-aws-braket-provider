@@ -42,8 +42,10 @@ def map_measurements(counts: Counter, qasm_experiment: QasmQobjExperiment) -> Di
     # Need to get measure mapping
     instructions: List[QasmQobjInstruction] = [i for i in qasm_experiment.instructions if i.name == 'measure']
     mapping = dict([(q, m) for i in instructions for q, m in zip(i.qubits, i.memory)])
-    mapped_counts = dict((_reverse_and_map(k, mapping)[::-1], v) for k, v in counts.items())  # must be reversed from Big Endian to Little Endian
-    return mapped_counts
+    mapped_counts = [(_reverse_and_map(k, mapping), v) for k, v in counts.items()]
+    keys = set(k for k, _ in mapped_counts)
+    new_map = [(key, sum([v for k, v in mapped_counts if k == key])) for key in keys]
+    return dict(new_map)
 
 
 class AWSJob(BaseJob):
