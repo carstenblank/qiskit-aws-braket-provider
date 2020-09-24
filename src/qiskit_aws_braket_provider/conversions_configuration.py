@@ -163,7 +163,7 @@ def aws_device_2_configuration(aws_device: AwsDevice) -> QasmBackendConfiguratio
 
     configuration: QasmBackendConfiguration = QasmBackendConfiguration(
         backend_name=backend_name,
-        backend_version=backend_version,
+        backend_version='1.0.0',  # TODO: there is no such thing as version, what to do instead?
         n_qubits=num_qubits,
         basis_gates=basis_gates,
         gates=gates,
