@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import logging
-from typing import List
+
+import boto3
+from typing import List, Optional
 
 from boto3 import Session
 from braket.aws import AwsDevice, AwsSession
@@ -29,8 +31,10 @@ class AWSProvider(BaseProvider):
     _aws_session: AwsSession
     _session: Session
 
-    def __init__(self, session: Session, *args, **kwargs):
+    def __init__(self, region_name: Optional[str] = None, session: Optional[Session] = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if not session:
+            session = boto3.session.Session(region_name=region_name)
         self._session = session
         self._aws_session = AwsSession(boto_session=session)
 
