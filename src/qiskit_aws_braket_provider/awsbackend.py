@@ -59,7 +59,25 @@ class AWSBackend(BaseBackend):
             return aws_simulator_to_properties(properties, self._configuration)
 
     def status(self) -> BackendStatus:
-        pass
+        # now = datetime.now()
+        # windows = self._aws_device.properties.service.executionWindows
+        # is_in_execution_window = windows.
+        status: str = self._aws_device.status
+        backend_status: BackendStatus = BackendStatus(
+            backend_name=self.name(),
+            backend_version=self.version(),
+            operational=False,
+            pending_jobs=0,  # TODO
+            status_msg=status
+
+        )
+        if status == 'ONLINE':
+            backend_status.operational = True
+        elif status == 'OFFLINE':
+            backend_status.operational = False
+        else:
+            backend_status.operational = False
+        return backend_status
 
     def _get_job_data_s3_folder(self, job_id):
         return f"results-{self.name()}-{job_id}"
