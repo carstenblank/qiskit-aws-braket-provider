@@ -13,7 +13,9 @@
 # limitations under the License.
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
+
+from braket.device_schema.device_service_properties_v1 import DeviceCost
 from typing import List, Dict, Optional, Any, Union, Tuple
 
 from botocore.response import StreamingBody
@@ -57,7 +59,25 @@ class AWSBackend(BaseBackend):
             return aws_simulator_to_properties(properties, self._configuration)
 
     def status(self) -> BackendStatus:
-        pass
+        # now = datetime.now()
+        # windows = self._aws_device.properties.service.executionWindows
+        # is_in_execution_window = windows.
+        status: str = self._aws_device.status
+        backend_status: BackendStatus = BackendStatus(
+            backend_name=self.name(),
+            backend_version=self.version(),
+            operational=False,
+            pending_jobs=0,  # TODO
+            status_msg=status
+
+        )
+        if status == 'ONLINE':
+            backend_status.operational = True
+        elif status == 'OFFLINE':
+            backend_status.operational = False
+        else:
+            backend_status.operational = False
+        return backend_status
 
     def _get_job_data_s3_folder(self, job_id):
         return f"results-{self.name()}-{job_id}"
@@ -211,16 +231,30 @@ class AWSBackend(BaseBackend):
         )
         return job
 
+    def estimate_costs(self, qobj: QasmQobj) -> Optional[float]:
+        shots = qobj.config.shots
+        no_experiments = len(qobj.experiments)
+
+        cost: DeviceCost = self._aws_device.properties.service.deviceCost
+        if cost.unit == 'shot':
+            return shots * no_experiments * cost.price
+        elif cost.unit == 'hour':
+            time_per_experiment = timedelta(seconds=10)  # TODO: make this a better estimate: depends on no_qubits and depth
+            total_time = shots * no_experiments * time_per_experiment
+            return total_time.total_seconds() / 60 / 60 * cost.price
+        else:
+            return None
+
     def run(self, qobj: QasmQobj, s3_bucket: Optional[str] = None, extra_data: Optional[dict] = None):
-        s3_location: AwsSession.S3DestinationFolder = self._save_job_data_s3(qobj, s3_bucket=s3_bucket, extra_data=extra_data)
 
         # If we get here, then we can continue with running, else ValueError!
         circuits: List[Circuit] = list(convert_qasm_qobj(qobj))
         shots = qobj.config.shots
-        shots = 1  # TODO: remove once you feel safe!
 
         tasks: List[AwsQuantumTask] = []
         try:
+            s3_location: AwsSession.S3DestinationFolder = self._save_job_data_s3(qobj, s3_bucket=s3_bucket, extra_data=extra_data)
+
             for circuit in circuits:
                 task = self._aws_device.run(
                     task_specification=circuit,
@@ -228,6 +262,9 @@ class AWSBackend(BaseBackend):
                     shots=shots
                 )
                 tasks.append(task)
+
+            task_arns = [t.id for t in tasks]
+            self._save_job_task_arns(job_id=qobj.qobj_id, task_arns=task_arns, s3_bucket=s3_location[0])
         except Exception as ex:
             logger.error(f'During creation of tasks an error occurred: {ex}')
             logger.error(f'Cancelling all tasks {len(tasks)}!')
@@ -235,9 +272,9 @@ class AWSBackend(BaseBackend):
                 logger.error(f'Attempt to cancel {task.id}...')
                 task.cancel()
                 logger.error(f'State of {task.id}: {task.state()}.')
+            self._delete_job_task_arns(qobj.qobj_id, s3_bucket=s3_bucket)
+            self._delete_job_data_s3(qobj.qobj_id, s3_bucket=s3_bucket)
             raise ex
-        task_arns = [t.id for t in tasks]
-        self._save_job_task_arns(job_id=qobj.qobj_id, task_arns=task_arns, s3_bucket=s3_location[0])
 
         job = awsjob.AWSJob(
             job_id=qobj.qobj_id,
