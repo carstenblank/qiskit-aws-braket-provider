@@ -128,6 +128,8 @@ class AWSJob(BaseJob):
             status = JobStatus.QUEUED
         elif any([s == 'RUNNING' for s in states]):
             status = JobStatus.RUNNING
+        elif any([s == AwsQuantumTask.RESULTS_READY_STATES for s in states]) and any([s in ['QUEUED', 'CREATED', 'RUNNING'] for s in states]):
+            status = JobStatus.RUNNING
         elif all([s == 'COMPLETED' for s in states]):
             status = JobStatus.DONE
         elif any([s == 'FAILED' for s in states]):
