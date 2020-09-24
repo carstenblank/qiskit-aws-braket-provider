@@ -18,6 +18,8 @@ wheel = "*"
 codecov = "*"
 pipenv-setup = "*"
 sphinx = "*"
+jupyter = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.8"
