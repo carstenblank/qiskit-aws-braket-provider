@@ -26,13 +26,15 @@ LOG = logging.getLogger(__name__)
 
 class AWSJobTests(unittest.TestCase):
 
-    def setUp(self) -> None:
-        logging.basicConfig(format=logging.BASIC_FORMAT, level='INFO')
-        self.session = boto3.session.Session(region_name='us-east-1')
-        self.provider = AWSProvider(self.session)
+    def _load_backend(self):
+        self.provider = AWSProvider(region_name='us-east-1')
         self.ionq_backend: AWSBackend = self.provider.get_backend('IonQ Device')
 
+    def setUp(self) -> None:
+        logging.basicConfig(format=logging.BASIC_FORMAT, level='INFO')
+
     def test_result(self):
+        self._load_backend()
         job_id = '52284ef5-1cf7-4182-9547-5bbc7c5dd9f5'
         job: AWSJob = self.ionq_backend.retrieve_job(job_id=job_id)
         result: Result = job.result()
